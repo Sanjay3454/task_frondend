@@ -109,7 +109,7 @@
       </div>
       <div>
         <label for="taskData">Task Data:</label>
-        <textarea name="taskData" id="Task Data" formControlName="TaskData"></textarea>
+        <textarea name="taskData" id="TaskData" formControlName="TaskData"></textarea>
       </div>
       <button type="submit" class="btn ">Add task</button>
     </form>
@@ -172,22 +172,22 @@
          </div>
          <div class="modal-body">
           
- <div >
+ <div   *ngFor="let i of tasksArray">
      <!-- <form [formGroup]="editForm" (ngSubmit)="edit()"> -->
-      <form>
-       <div>
+      <form *ngIf="editTaskId === i.id" [formGroup]="editForm" >
+       <div >
          <label for="date">Date:</label>
-         <input type="text" name="date" id="date" formControlName="date">
+         <input [(ngModel)]="i.date" formControlName="date" type="text" name="date" id="date" >
        </div>
        <div>
          <label for="taskName">Task Name:</label>
-         <input type="text" name="taskName" id="taskName" formControlName="taskName">
+         <input [(ngModel)]="i.taskName"  formControlName="taskName" type="text" name="taskName" id="taskName" f>
        </div>
        <div>
-         <label for="taskData">Task Data:</label>
-         <textarea name="taskData" id="Task Data" formControlName="TaskData"></textarea>
+         <label  for="taskData">Task Data:</label>
+         <textarea [(ngModel)]="i.taskData"  formControlName="TaskData" name="taskData" id="Task Data" ></textarea>
        </div>
-       <button type="submit" class="btn ">edit task</button>
+       <button (click)="edit(i.id)"   type="submit" class="btn ">edit task</button>
      </form>
    </div>
  
@@ -229,7 +229,7 @@
                 <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" alt="..." /></div>
                 <div class="col-lg-5">
                     <h1 class="font-weight-light">Manage your Task</h1>
-                    <p>The task manager website allows users to add, edit, and delete tasks. It provides a simple interface for creating tasks, setting due dates, and including details. Users can easily manage their to-do list and track progress. Editing and deletion options allow users to keep their task list up-to-date. The task manager website is an efficient tool for organizing and managing tasks.</p>
+                    <p>The task manager website allows users to add, edit, and delete tasks. It provides a simple interface for creating tasks,0setting  dates, and including details.Editing and deletion options allow users to keep their task list up-to-date. The task manager website is an efficient tool for organizing and managing tasks.</p>
                   
                     <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#exampleModal">
                       Add task
@@ -265,10 +265,11 @@
                   <h5 class="card-title"> <p>{{i.taskName}}</p> </h5>
                   <h2 class="card-title">{{i.date}}</h2>
                   <p class="card-text ">{{i.taskData}}</p>
-                </div>
-                <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                </div>
+                <button  (click)="showEditForm(i.id)" type="button" class="btn " data-bs-toggle="modal" data-bs-target="#exampleModal1">
                   edit
                 </button>
+                <button (click)="deleteTask(i.id)" class="btn btn-danger">Delete</button>
               </div>
             </div>
           </div>

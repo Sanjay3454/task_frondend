@@ -42,8 +42,8 @@ export class DataserviceService {
       return this.http.post('http://localhost:3000/getTasks',data)
     }
 
-    editTask(date:any,taskName:any,taskData:any,email:any){
-      const data={date,taskName,taskData,email}
+    editTask(date:any,taskName:any,taskData:any,email:any,Taskid:any){
+      const data={date,taskName,taskData,email,Taskid}
       console.log(data);
       return this.http.post('http://localhost:3000/editTasks',data)
 
@@ -57,7 +57,10 @@ export class DataserviceService {
 
     }
 
-
+    deleteTask(Taskid:any){
+      const data={Taskid}
+      return this.http.post('http://localhost:3000/deleteTask',data)
+    }
    
   
 }

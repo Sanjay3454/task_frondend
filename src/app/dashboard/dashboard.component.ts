@@ -1,16 +1,26 @@
-import { Component } from '@angular/core';
+
 import { FormBuilder, Validators } from '@angular/forms';
 import { DataserviceService } from '../services/dataservice.service';
 import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   tasksArray:any
   email:any
+  editTaskId: string | null = null;
+
+ 
+
+  ngOnInit():void{
+     
+
+  }
+
   constructor( private router: Router,
     private ds: DataserviceService,
     private fb: FormBuilder,
@@ -20,7 +30,9 @@ export class DashboardComponent {
       this.ds.getTasks(email).subscribe((result: any) => {
 
         this.tasksArray=result.data
+        
         console.log(  this.tasksArray);
+        
        })
 
        if(!localStorage.getItem("currentuser")){
@@ -37,11 +49,11 @@ export class DashboardComponent {
       TaskData: ['', [Validators.required]]
     });
     
-    // editForm = this.fb.group({
-    //   date: ['', [Validators.required]],
-    //   taskName: ['', [Validators.required]],
-    //   TaskData: ['', [Validators.required]]
-    // });
+    editForm = this.fb.group({
+      date: ['', [Validators.required]],
+      taskName: ['', [Validators.required]],
+      TaskData: ['', [Validators.required]]
+    });
       
       // isFormVisible = false;
     
@@ -76,28 +88,32 @@ export class DashboardComponent {
 
 
 
-    //  edit(){
-    //   const date = this.editForm.value.date;
-    //     const taskName = this.editForm.value.taskName;
-    //     const taskData = this.editForm.value.TaskData;
-    //     const email=this.email
+     edit(Taskid:string){
+      this.reloadPage()
+      
+      console.log("BRO",Taskid);
+      
+      const date = this.editForm.value.date;
+        const taskName = this.editForm.value.taskName;
+        const taskData = this.editForm.value.TaskData;
+        const email=this.email
 
-    //     if(this.editForm.valid){
-    //       this.ds.editTask(date,taskName,taskData,email).subscribe((result: any) => {
+        if(this.editForm.valid){
+          this.ds.editTask(date,taskName,taskData,email,Taskid).subscribe((result: any) => {
         
-    //       },
-    //       result=>{
-    //         alert(result.error.message) 
-    //       })
+          },
+          result=>{
+            alert(result.error.message) 
+          })
           
-    //       }
-    //       else{
-    //         alert("invalidform")
-    //       }
+          }
+          else{
+            alert("invalidform")
+          }
 
         
 
-    //  }
+     }
 
 
     
@@ -153,6 +169,23 @@ delete(){
   
 
 }
+
+deleteTask(Taskid:string){
+ 
+  console.log(Taskid);
+  this.ds.deleteTask(Taskid).subscribe((result:any)=>{
+    alert(result.message)
+    this.reloadPage()
+  },
+  result=>{
+    alert(result.error.message)
+  }
+  )
+}
+showEditForm(id: string) {
+  this.editTaskId = id;
+}
+
 
 
 }
